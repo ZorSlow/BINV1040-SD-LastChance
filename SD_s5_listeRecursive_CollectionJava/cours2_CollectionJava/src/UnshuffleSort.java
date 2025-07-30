@@ -56,13 +56,14 @@ public class UnshuffleSort {
 		// methode private --> public car verifiee par la classe TestEtape1UnshuffleSort
 		// Pour le debug:
 		System.out.println(listeDeDeques);
+		// Essayer de placer l'entier dans un des deques existants
 		for (ArrayDeque<Integer> deque : listeDeDeques) {
 			if (entier >= deque.getLast()) {
 				deque.addLast(entier);
-				return;
+				return; // on a trouvé la place -> on sort
 			}
-			deque.add(entier);
 		}
+		// Si on arrive ici, aucun deque ne convient, on en crée un nouveau
 		ArrayDeque<Integer> nouveauDeque = new ArrayDeque<>();
 		nouveauDeque.add(entier);
 		listeDeDeques.addLast(nouveauDeque);
@@ -79,8 +80,14 @@ public class UnshuffleSort {
 		
 		// Pour le debug:
 		System.out.println("etape2");
-
-	    return null;
+		int [] resultat = new int[taille];
+		for (int i = 0; i < taille; i++) {
+			resultat[i] = supprimerPlusPetitEntier();
+			if (!listeDeDeques.isEmpty()) {
+				reorganiserListe();
+			}
+		}
+		return resultat;
 		// TODO
 
 
@@ -91,19 +98,39 @@ public class UnshuffleSort {
 	private int supprimerPlusPetitEntier(){
 
 		// supprime et renvoie l'entier supprime
-
-		return 0;
+		// On suppose que listeDeDeques n'est jamais vide quand on appelle cette méthode
+		ArrayDeque<Integer> premierDeque = listeDeDeques.getFirst();
+		int entier = premierDeque.removeFirst();
+		// Si le deque est vide après suppression, on le retire de la liste
+		if (premierDeque.isEmpty()) {
+			listeDeDeques.removeFirst();
+		}
+		return entier;
 	}
 	
 	private void reorganiserListe(){
 
 		// Pour le debug:
 		System.out.println(listeDeDeques);
-
 		// pour plus de lisibilite cette methode pourrait appeler la methode suivante :
+		// Retirer le premier deque temporairement
+		if (listeDeDeques.size()<=1)
+			return;
+		ArrayDeque<Integer> premierDeque = listeDeDeques.removeFirst();
+		int clef = premierDeque.getFirst();
 
+		// Trouver la position où insérer
+		int index = 0;
+		for (ArrayDeque<Integer> deque : listeDeDeques) {
+			if (clef >= deque.getFirst()) {
+				index++;
+			}
+		}
+
+		// Réinsérer à la position trouvée
+		listeDeDeques.add(index, premierDeque);
 	}
-		
+
 	private void deplacerPremierDeque() {
 
 	}
