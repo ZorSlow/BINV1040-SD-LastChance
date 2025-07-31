@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class Parking {
@@ -7,7 +8,7 @@ public class Parking {
 	// construit un ensembleVoitures vide
 	public Parking(){
 		// TODO
-
+		ensembleVoitures = new HashSet<>();
 	}
 
 	/**
@@ -17,7 +18,7 @@ public class Parking {
 	 *
 	 */
 	public boolean ajouterVoiture(Voiture voiture){
-		return false;
+		return ensembleVoitures.add(voiture);
 		// TODO
 
 	}
@@ -28,8 +29,9 @@ public class Parking {
 	 * @param voiture la voiture a verifier
 	 * @return true si la voiture est presente, false sinon
 	 */
-	public boolean voitureAutorisee(Voiture voiture){	
-		return false;
+	public boolean voitureAutorisee(Voiture voiture){
+
+		return ensembleVoitures.contains(voiture);
 		// TODO
 
 	}
@@ -40,8 +42,8 @@ public class Parking {
 	 * @return true si la voiture etait presente, false sinon
 	 */
 	public boolean retirerVoiture(Voiture voiture){
-		return false;
 		// TODO
+		return ensembleVoitures.remove(voiture);
 
 	}
 
@@ -55,8 +57,13 @@ public class Parking {
 
 		// piste la classe Arrays possede une methode static sort
 		// qui trie la table passee en parametre !
-
-		return null;
+		String[] tablePlaquesTrie = new  String[ensembleVoitures.size()];
+		int index = 0;
+		for(Voiture v : ensembleVoitures) {
+			tablePlaquesTrie[index++] = v.getNumPlaque();
+		}
+		Arrays.sort(tablePlaquesTrie);
+		return tablePlaquesTrie;
 		//TODO
 
 	}

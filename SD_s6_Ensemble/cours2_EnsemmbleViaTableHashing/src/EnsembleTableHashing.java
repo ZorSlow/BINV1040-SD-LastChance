@@ -1,25 +1,29 @@
 /**
  * implementation de l'interface Ensemble via une table de listes
- * @author 
+ * @author
  *
  */
 
 public class EnsembleTableHashing<E> implements Ensemble<E>{
-	
+
 	private ListeSimpleImpl<E>[] tableListes;
 	private int taille;
 	private double loadFactor;  //pour le defi 
 
 	// taille : taille logique 
 	// capacite : taille physique 
-	public EnsembleTableHashing(int capacite){	
+	public EnsembleTableHashing(int capacite){
 		// TODO
-
+		taille = 0;
+		tableListes = new ListeSimpleImpl[capacite];
+		for (int i = 0; i < capacite; i++) {
+			tableListes[i] = new ListeSimpleImpl<>();
+		}
 	}
-	
-	// taille : taille logique 
-	// capacite : taille physique 
-	public EnsembleTableHashing(int capacite, double loadFactor){	
+
+	// taille : taille logique
+	// capacite : taille physique
+	public EnsembleTableHashing(int capacite, double loadFactor){
 		// pour le  defi
 		this(capacite);
 		this.loadFactor = loadFactor;
@@ -30,12 +34,12 @@ public class EnsembleTableHashing<E> implements Ensemble<E>{
 		return taille == 0;
 	}
 
-	
+
 	public int taille(){
 		return taille;
 	}
 
-	
+
 	public boolean contient(E element){
 		// TODO
 		// Attention la methode hashCode() renvoie un entier quelconque
@@ -43,14 +47,20 @@ public class EnsembleTableHashing<E> implements Ensemble<E>{
 		// Il pourrait meme etre negatif
 		// solution pbm compris entre 0 et taille physique : % taille physiqye
 		// solution pbm negatif : Math.abs()
+		int index = Math.abs(element.hashCode()% tableListes.length);
+		if(tableListes[index] == null)return false;
+		return tableListes[index].contient(element);
+		}
 
-		return false;
 
-	}
-
-	
 	public boolean ajouter(E element) {
 		// TODO
+		int index = Math.abs(element.hashCode()% tableListes.length);
+		if (!contient(element)){
+			tableListes[index].insererEnTete(element);
+			taille++;
+			return true;
+		}
 		return false;
 
 	}
@@ -58,21 +68,26 @@ public class EnsembleTableHashing<E> implements Ensemble<E>{
 
 	public boolean enlever(E element) {
 		// TODO
-		 return false;
-
+		int index = Math.abs(element.hashCode()% tableListes.length);
+		if (contient(element)){
+			tableListes[index].supprimer(element);
+			taille--;
+			return true;
+		}
+		return false;
 	}
-	
-	
+
+
 	public String toString(){
-	
+
 		// Pour le debug cette methode renvoie le contenu de la structure de donnees utilisee
 		// on y voit apparaitre une table avec les differentes listes, meme celles qui sont vides!
 		// la methode proposee est utilisee par la classe de tests pour le defi
 
 		// Cette methode devrait renvoyer uniquement les donnees comprises dans l'ensemble
-		// Ex supplementaire 
-		
-		
+		// Ex supplementaire
+
+
 		String aRenvoyer="";
 		for (int i = 0; i < tableListes.length; i++) {
 			aRenvoyer += "\ntable"+i+tableListes[i];

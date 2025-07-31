@@ -76,11 +76,16 @@ public class Voiture{
 
 
 	//ex c
+	//@Override
+	// public int hashCode() {
+//     return Objects.hash(numPlaque);
+// }
 
 
 	//ex d
-	
-	
-	
+
+
+
+
 }
 
